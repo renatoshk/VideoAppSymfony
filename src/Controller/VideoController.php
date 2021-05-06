@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Video;
 use App\Utils\CategoryFront;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,8 +16,11 @@ class VideoController extends AbstractController
     public function index($id, CategoryFront $categories)
     {
         $categories->getCategoryListAndParent($id);
+        $videos = $this->getDoctrine()->getRepository(Video::class)
+            ->findAll();
         return $this->render('front/video_list.html.twig', [
-            'subCategories'=>$categories
+            'subCategories'=>$categories,
+            'videos'=>$videos
         ]);
     }
     /**
